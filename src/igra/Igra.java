@@ -2,9 +2,13 @@ package igra;
 
 import java.awt.BorderLayout;
 import java.awt.Frame;
+import java.awt.GridLayout;
+import java.awt.LayoutManager;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -17,7 +21,7 @@ public class Igra extends Frame {
 	public Igra() {
 		super("Tenkovi");
 		mreza = new Mreza(this);
-		setSize(600, 600);
+		setBounds(0, 0, 500, 500);
 		
 		
 		addWindowListener(new WindowAdapter() {
@@ -25,12 +29,21 @@ public class Igra extends Frame {
 				dispose();
 			}
 		});
-		
+	
 		add(mreza, BorderLayout.CENTER);
 		
 		dodajMeni();
 		
+		//setResizable(false);
 		setVisible(true);
+		
+		mreza.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("Mouse clicked" + e.getX() + ", " + e.getY());
+				System.out.println(getComponentAt(e.getX(), e.getY()));
+			}
+		});
+		
 	}
 	
 	private void dodajMeni() {
