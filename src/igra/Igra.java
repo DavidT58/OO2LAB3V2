@@ -1,5 +1,6 @@
 package igra;
 
+import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.Menu;
 import java.awt.MenuBar;
@@ -7,6 +8,7 @@ import java.awt.MenuItem;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+@SuppressWarnings("serial")
 public class Igra extends Frame {
 	private Mreza mreza;
 	private boolean rezim; //true rezim igre, false rezim izmena
@@ -14,14 +16,17 @@ public class Igra extends Frame {
 	
 	public Igra() {
 		super("Tenkovi");
-		mreza = new Mreza();
+		mreza = new Mreza(this);
 		setSize(600, 600);
+		
 		
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				dispose();
 			}
 		});
+		
+		add(mreza, BorderLayout.CENTER);
 		
 		dodajMeni();
 		
@@ -39,5 +44,14 @@ public class Igra extends Frame {
 		menu.addSeparator();
 		menu.add(rezimIgre);
 		
+		rezimIzmena.addActionListener(e -> {
+			rezim = false;
+			System.out.println("Rezim Izmena");
+		});
+		
+		rezimIgre.addActionListener(e -> {
+			rezim = true;
+			System.out.println("Rezim Igre");
+		});
 	}
 }

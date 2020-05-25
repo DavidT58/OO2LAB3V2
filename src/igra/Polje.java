@@ -2,6 +2,7 @@ package igra;
 
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Graphics;
 
 @SuppressWarnings("serial")
 public abstract class Polje extends Canvas {
@@ -33,5 +34,8 @@ public abstract class Polje extends Canvas {
 	
 	public boolean mozeFigura(Figura f) { return moze; }
 	
-	 
+	public void paint(Graphics g) {
+		g.setColor(this.boja);
+		g.fillRect(pozicija[0], pozicija[1], 25, 25);
+	}
 }
