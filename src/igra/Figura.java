@@ -1,11 +1,13 @@
 package igra;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 public abstract class Figura {
 	
+	protected Color boja;
 	protected Polje polje;
-	int x, y;
+	protected int x, y;
 	
 	public Figura(Polje p) {
 		polje = p;

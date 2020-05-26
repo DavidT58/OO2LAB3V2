@@ -1,5 +1,7 @@
 package igra;
 
+import java.awt.Graphics;
+
 public class Tenk extends Figura implements Runnable {
 
 	public enum Smer{ GORE, DOLE, LEVO, DESNO };
@@ -19,8 +21,9 @@ public class Tenk extends Figura implements Runnable {
 
 	@Override
 	public void crtaj() {
-		
-
+		Graphics g = polje.getGraphics();
+		g.setColor(boja);
+		g.drawLine(polje.getX(), polje.getY(), polje.getX() + polje.getWidth(), polje.getY() + polje.getHeight());
 	}
 
 	@Override

@@ -2,44 +2,36 @@ package igra;
 
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+
 
 @SuppressWarnings("serial")
 public abstract class Polje extends Canvas {
 	
-	private static int nextid = 0;
-	private int id = nextid++;
+	protected static int nextid = 0;
+	protected int id = nextid++;
 	
 	protected Color boja;
-	private Mreza mreza;
+	protected Mreza mreza;
 	protected boolean moze;
-	private int[] pozicija;
+	protected int[] pozicija;
 	
 	public Polje(Mreza m) {
 		mreza = m;
 		pozicija = new int[2];
 	}
 	
-	private MouseAdapter getMouseAdapter(Polje p) {
-		MouseAdapter t = new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				System.out.println("Mouse clicked" + e.getX() + ", " + e.getY());
-				System.out.println(getComponentAt(e.getX(), e.getY()));
-				if(getComponentAt(e.getX(), e.getY()) == p) 
-					System.out.println(p.getID());
-			}
-		};
-		return t;
-	}
-	
 	public int getID() { return id; }
 	
-	public Polje dohvatiPoljePomeraj(int x, int y) {
+	public Polje dohvatiPoljePomeraj(int offsx, int offsy) {
+		int newX = pozicija[0] + offsx;
+		int newY = pozicija[1] + offsy;
 		
+		if(newX < 0 || newY < 0 || newX > mreza.getPolja().length || newY > mreza.getPolja().length)
+			return null;
+		
+		if(mreza.getPolja()[newX][newY] != null)
+			return mreza.getPolja()[pozicija[0]+offsx][pozicija[1]+offsy];
 		
 		return null;
 	}
@@ -55,9 +47,8 @@ public abstract class Polje extends Canvas {
 	
 	public boolean mozeFigura(Figura f) { return moze; }
 	
-	/*
-	public void paint(Graphics g) {
-		g.setColor(this.boja);
-		g.fillRect(getX(), getY(), 25, 25);
-	}*/
+	public boolean moze() { 
+		return !(this instanceof Zid);
+	}
+	
 }

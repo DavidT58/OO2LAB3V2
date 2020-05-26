@@ -1,5 +1,7 @@
 package igra;
 
+import java.awt.Graphics;
+
 public class Novcic extends Figura {
 	
 	public Novcic(Polje p) {
@@ -8,7 +10,7 @@ public class Novcic extends Figura {
 	
 	@Override
 	public void crtaj() {
-
+		
 	}
 
 }
