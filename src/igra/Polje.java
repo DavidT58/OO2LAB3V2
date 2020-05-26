@@ -3,6 +3,7 @@ package igra;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -21,8 +22,6 @@ public abstract class Polje extends Canvas {
 	public Polje(Mreza m) {
 		mreza = m;
 		pozicija = new int[2];
-		
-		//addMouseListener(getMouseAdapter(this));
 	}
 	
 	private MouseAdapter getMouseAdapter(Polje p) {
@@ -56,9 +55,9 @@ public abstract class Polje extends Canvas {
 	
 	public boolean mozeFigura(Figura f) { return moze; }
 	
-	
+	/*
 	public void paint(Graphics g) {
 		g.setColor(this.boja);
 		g.fillRect(getX(), getY(), 25, 25);
-	}
+	}*/
 }

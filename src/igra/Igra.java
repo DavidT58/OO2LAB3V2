@@ -1,12 +1,15 @@
 package igra;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Frame;
 import java.awt.GridLayout;
+import java.awt.Label;
 import java.awt.LayoutManager;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
+import java.awt.Panel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -20,8 +23,9 @@ public class Igra extends Frame {
 	
 	public Igra() {
 		super("Tenkovi");
+		//setBounds(0, 24, 650, 650);
+		setSize(650, 650);
 		mreza = new Mreza(this);
-		setBounds(0, 0, 500, 500);
 		
 		
 		addWindowListener(new WindowAdapter() {
@@ -31,19 +35,21 @@ public class Igra extends Frame {
 		});
 	
 		add(mreza, BorderLayout.CENTER);
+		Label l1 = new Label("LMAO");
+		l1.setBackground(Color.yellow);
+		l1.setSize(100, 100);
+		add(l1, BorderLayout.EAST);
 		
 		dodajMeni();
 		
-		//setResizable(false);
-		setVisible(true);
-		
 		mreza.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("Mouse clicked" + e.getX() + ", " + e.getY());
+				System.out.println("Mouse clicked " + e.getX() + ", " + e.getY());
 				System.out.println(getComponentAt(e.getX(), e.getY()));
 			}
 		});
 		
+		setVisible(true);
 	}
 	
 	private void dodajMeni() {

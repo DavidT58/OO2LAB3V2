@@ -2,7 +2,12 @@ package igra;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridLayout;
+import java.awt.LayoutManager;
 import java.awt.Panel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -27,16 +32,19 @@ public class Mreza extends Panel implements Runnable {
 		igraci = new ArrayList<Igrac>();
 		novcici = new ArrayList<Novcic>();
 		tenkovi = new ArrayList<Tenk>();
-		setBounds(0, 54, igra.getWidth() - 100, igra.getHeight()-100);
-		
+		setLayout(new GridLayout(d, d, 2, 2));
 		
 		for(int i = 0; i < d; i++)
 			for(int j = 0; j < d; j++) {
 				double rand = Math.random();
 				polja[i][j] = (rand < 0.8) ? new Trava(this) : new Zid(this);
-				//polja[i][j].setPozicija(i*25 + i*4, j*25 + j*4);
-				polja[i][j].setBounds(i*25 + i*4, j*25 + j*4 + 54, 25, 25);
-				//add(polja[i][j], BorderLayout.CENTER);
+				polja[i][j].addMouseListener(new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						System.out.println("Mouse clicked " + e.getX() + ", " + e.getY());
+						System.out.println(getComponentAt(e.getX(), e.getY()));
+					}
+				});
+				add(polja[i][j]);
 			}
 		
 	}

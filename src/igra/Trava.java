@@ -7,5 +7,6 @@ public class Trava extends Polje {
 		super(m);
 		moze = true;
 		boja = Color.GREEN;
+		setBackground(boja);
 	}
 }

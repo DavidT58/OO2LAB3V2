@@ -8,5 +8,6 @@ public class Zid extends Polje {
 		super(m);
 		moze = false;
 		boja = Color.LIGHT_GRAY;
+		setBackground(boja);
 	}
 }
