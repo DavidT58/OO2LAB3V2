@@ -14,8 +14,8 @@ public class Igrac extends Figura {
 	public void crtaj() {
 		Graphics g = polje.getGraphics();
 		g.setColor(boja);
-		//g.drawRect(x, y, 10, 10);
-		g.drawLine(polje.getX()+polje.getWidth()-1, polje.getY(), polje.getX(), polje.getY() + polje.getHeight()-1);
-		g.drawLine(polje.getX(), polje.getY(), polje.getX() + polje.getWidth(), polje.getY() + polje.getHeight());
+		//g.fillRect(0, 0, polje.getWidth()-1, polje.getHeight()-1);
+		g.drawLine(polje.getWidth()/2, 0, polje.getWidth()/2, polje.getHeight()-1);
+		g.drawLine(0, polje.getHeight()/2, polje.getWidth(), polje.getHeight()/2);
 	}
 }

@@ -51,4 +51,5 @@ public abstract class Polje extends Canvas {
 		return !(this instanceof Zid);
 	}
 	
+	
 }

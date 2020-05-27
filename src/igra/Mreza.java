@@ -18,7 +18,7 @@ public class Mreza extends Panel implements Runnable {
 	private ArrayList<Novcic> novcici;
 	private ArrayList<Tenk> tenkovi;
 	private int d;
-	Thread nit = new Thread(this);
+	//Thread nit = new Thread(this);
 	
 	public Mreza(int dd, Igra ig) {
 		igra = ig;
@@ -52,7 +52,14 @@ public class Mreza extends Panel implements Runnable {
 		}
 		igrac = new Igrac(polja[r1][r2]);
 		
-		nit.start();
+		r1 = r.nextInt(d);
+		r2 = r.nextInt(d);
+		while(!polja[r1][r2].moze()) {
+			r1 = r.nextInt(d);
+			r2 = r.nextInt(d);
+		}
+		novcici.add(new Novcic(polja[r1][r2]));
+		//nit.start();
 	}
 	
 	public Mreza(Igra igra) { this(17, igra); } 
@@ -72,9 +79,13 @@ public class Mreza extends Panel implements Runnable {
 		for(int i = 0; i < d; i++)
 			for(int j = 0; j < d; j++) {
 				polja[i][j].paint(g);
-				
+				igrac.crtaj();
+				novcici.get(0).crtaj();
 			}
-		igrac.crtaj();
+		
+	}
+	
+	public void azuriraj() {
 		
 	}
 	
@@ -88,6 +99,6 @@ public class Mreza extends Panel implements Runnable {
 		}catch (InterruptedException e) {}		
 	}
 	
-	public void zavrsi() { nit.interrupt(); }
+	//public void zavrsi() { nit.interrupt(); }
 
 }
