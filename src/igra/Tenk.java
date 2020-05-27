@@ -23,7 +23,8 @@ public class Tenk extends Figura implements Runnable {
 	public void crtaj() {
 		Graphics g = polje.getGraphics();
 		g.setColor(boja);
-		g.drawLine(polje.getX(), polje.getY(), polje.getX() + polje.getWidth(), polje.getY() + polje.getHeight());
+		g.drawLine(0, 0, polje.getWidth(), polje.getHeight());
+		g.drawLine(polje.getWidth(), 0, 0, polje.getHeight());
 	}
 
 	@Override

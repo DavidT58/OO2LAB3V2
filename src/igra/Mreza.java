@@ -61,6 +61,14 @@ public class Mreza extends Panel implements Runnable {
 			r2 = r.nextInt(d);
 		}
 		novcici.add(new Novcic(polja[r1][r2]));
+		
+		r1 = r.nextInt(d);
+		r2 = r.nextInt(d);
+		while(!polja[r1][r2].moze()) {
+			r1 = r.nextInt(d);
+			r2 = r.nextInt(d);
+		}
+		tenkovi.add(new Tenk(polja[r1][r2]));
 	}
 	
 	public Mreza(Igra igra) { this(17, igra); } 
@@ -82,6 +90,7 @@ public class Mreza extends Panel implements Runnable {
 				polja[i][j].paint(g);
 				igrac.crtaj();
 				novcici.get(0).crtaj();
+				tenkovi.get(0).crtaj();
 			}
 	}
 	
@@ -94,6 +103,7 @@ public class Mreza extends Panel implements Runnable {
 		try {
 			while(!Thread.interrupted()) {
 			synchronized(this) {
+				
 				repaint();
 				//System.out.println("Nacrtano");
 			}

@@ -1,12 +1,19 @@
 package igra;
 
 import java.awt.BorderLayout;
+import java.awt.Button;
+import java.awt.Checkbox;
+import java.awt.CheckboxGroup;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Frame;
+import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
+import java.awt.Panel;
+import java.awt.TextField;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -22,11 +29,11 @@ public class Igra extends Frame {
 		mreza = new Mreza(this);
 		
 		add(mreza, BorderLayout.CENTER);
-		Label l1 = new Label("LMAO");
-		l1.setBackground(Color.yellow);
-		add(l1, BorderLayout.EAST);
 		
+		
+		dodajPanele();
 		dodajMeni();
+		
 		
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -36,6 +43,45 @@ public class Igra extends Frame {
 		});
 		
 		setVisible(true);
+		
+	}
+	
+	private void dodajPanele() {
+		Panel desni = new Panel();
+		Panel donji = new Panel();
+		desni.setLayout(new BorderLayout());
+		Panel choice = new Panel();
+		choice.setLayout(new GridLayout(2,0));
+		desni.add(choice, BorderLayout.EAST);
+		
+		
+		CheckboxGroup izbor = new CheckboxGroup();
+		Checkbox trava = new Checkbox("Trava", true, izbor);
+		Checkbox zid = new Checkbox("Zid", true, izbor);
+		trava.setBackground(Color.GREEN);
+		zid.setBackground(Color.LIGHT_GRAY);
+		
+		Label podloga = new Label("Podloga: ");
+		
+		desni.add(podloga, BorderLayout.WEST);
+		choice.add(trava);
+		choice.add(zid);
+		
+		
+		Label novcici = new Label("Novcica: ");
+		TextField brojNovcica = new TextField(2);
+		Label poeni = new Label("Poena: ");
+		Label brojPoena = new Label("");
+		Button pocni = new Button("Pocni");
+		
+		donji.add(novcici);
+		donji.add(brojNovcica);
+		donji.add(poeni);
+		donji.add(brojPoena);
+		donji.add(pocni);
+		
+		add(desni, BorderLayout.EAST);
+		add(donji, BorderLayout.SOUTH);
 		
 	}
 	

@@ -13,7 +13,7 @@ public class Novcic extends Figura {
 	public void crtaj() {
 		Graphics g = polje.getGraphics();
 		g.setColor(Color.YELLOW);
-		g.fillOval(0, 0, polje.getWidth()-1, polje.getHeight()-1);
+		g.fillOval(polje.getWidth()/4, polje.getWidth()/4, polje.getWidth()/2, polje.getHeight()/2);
 	}
 
 }
