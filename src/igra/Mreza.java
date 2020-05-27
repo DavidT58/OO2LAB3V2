@@ -69,6 +69,7 @@ public class Mreza extends Panel implements Runnable {
 			r2 = r.nextInt(d);
 		}
 		tenkovi.add(new Tenk(polja[r1][r2]));
+		tenkovi.get(0).pokreni();
 	}
 	
 	public Mreza(Igra igra) { this(17, igra); } 
@@ -112,6 +113,9 @@ public class Mreza extends Panel implements Runnable {
 		}catch (InterruptedException e) {}		
 	}
 	
-	public void zavrsi() { nit.interrupt(); }
+	public void zavrsi() {
+		nit.interrupt();
+		tenkovi.get(0).zaustavi();
+	}
 
 }

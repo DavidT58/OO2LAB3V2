@@ -18,7 +18,7 @@ public abstract class Figura {
 	public Polje getPolje() { return polje; }
 	
 	public void pomeriNaPolje(Polje p) {
-		if(p.mozeFigura(this)) {
+		if(p != null && p.mozeFigura(this)) {
 			polje = p;
 			x = polje.getPozicija()[0];
 			y = polje.getPozicija()[1];

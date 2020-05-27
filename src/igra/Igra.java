@@ -21,19 +21,22 @@ import java.awt.event.WindowEvent;
 public class Igra extends Frame {
 	private Mreza mreza;
 	private boolean rezim; //true rezim igre, false rezim izmena
-	
+	private boolean izmena;
+	CheckboxGroup izbor;
+	Checkbox trava;
+	Checkbox zid;
+	TextField brojNovcica;
+	Label brojPoena;
+	Button pocni;
 	
 	public Igra() {
 		super("Tenkovi");
 		setSize(650, 650);
 		mreza = new Mreza(this);
-		
 		add(mreza, BorderLayout.CENTER);
-		
 		
 		dodajPanele();
 		dodajMeni();
-		
 		
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -41,9 +44,7 @@ public class Igra extends Frame {
 				dispose();
 			}
 		});
-		
 		setVisible(true);
-		
 	}
 	
 	private void dodajPanele() {
@@ -55,9 +56,9 @@ public class Igra extends Frame {
 		desni.add(choice, BorderLayout.EAST);
 		
 		
-		CheckboxGroup izbor = new CheckboxGroup();
-		Checkbox trava = new Checkbox("Trava", true, izbor);
-		Checkbox zid = new Checkbox("Zid", true, izbor);
+		izbor = new CheckboxGroup();
+		trava = new Checkbox("Trava", true, izbor);
+		zid = new Checkbox("Zid", true, izbor);
 		trava.setBackground(Color.GREEN);
 		zid.setBackground(Color.LIGHT_GRAY);
 		
@@ -69,10 +70,10 @@ public class Igra extends Frame {
 		
 		
 		Label novcici = new Label("Novcica: ");
-		TextField brojNovcica = new TextField(2);
+		brojNovcica = new TextField(2);
 		Label poeni = new Label("Poena: ");
-		Label brojPoena = new Label("");
-		Button pocni = new Button("Pocni");
+		brojPoena = new Label("");
+		pocni = new Button("Pocni");
 		
 		donji.add(novcici);
 		donji.add(brojNovcica);

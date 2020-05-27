@@ -27,7 +27,7 @@ public abstract class Polje extends Canvas {
 		int newX = pozicija[0] + offsx;
 		int newY = pozicija[1] + offsy;
 		
-		if(newX < 0 || newY < 0 || newX > mreza.getPolja().length || newY > mreza.getPolja().length)
+		if(newX < 0 || newY < 0 || newX >= mreza.getPolja().length || newY >= mreza.getPolja().length)
 			return null;
 		
 		if(mreza.getPolja()[newX][newY] != null)

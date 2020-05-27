@@ -4,20 +4,17 @@ import java.awt.Graphics;
 
 public class Tenk extends Figura implements Runnable {
 
-	public enum Smer{ GORE, DOLE, LEVO, DESNO };
-	
+	//public enum Smer{ GORE, DOLE, LEVO, DESNO };
+	Thread nit = new Thread(this);
 	
 	public Tenk(Polje p) {
 		super(p);
 		
 	}
 	
-	public void pomeri(Smer s) {
-		switch(s) {
-		case GORE:
-			break;
-		}
-	}
+	public void pokreni() { nit.start(); }
+	
+	public void zaustavi() { nit.interrupt(); }
 
 	@Override
 	public void crtaj() {
@@ -29,7 +26,17 @@ public class Tenk extends Figura implements Runnable {
 
 	@Override
 	public void run() {
-			
+		try {
+			while(!Thread.interrupted()) {
+				synchronized(this) {
+					polje.getMreza().repaint();
+					pomeriNaPolje(polje.dohvatiPoljePomeraj(1, 0));
+					polje.getMreza().repaint();
+					System.out.println("Pomeren tenk");
+				}
+			Thread.sleep(500);
+			}
+		}catch (InterruptedException e) {}		
 	}
 
 }
