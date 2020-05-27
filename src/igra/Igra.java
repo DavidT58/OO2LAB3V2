@@ -30,7 +30,7 @@ public class Igra extends Frame {
 		
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				//mreza.zavrsi();
+				mreza.zavrsi();
 				dispose();
 			}
 		});

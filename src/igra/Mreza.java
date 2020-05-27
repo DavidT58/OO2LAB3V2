@@ -18,7 +18,7 @@ public class Mreza extends Panel implements Runnable {
 	private ArrayList<Novcic> novcici;
 	private ArrayList<Tenk> tenkovi;
 	private int d;
-	//Thread nit = new Thread(this);
+	Thread nit = new Thread(this);
 	
 	public Mreza(int dd, Igra ig) {
 		igra = ig;
@@ -33,16 +33,18 @@ public class Mreza extends Panel implements Runnable {
 				double rand = Math.random();
 				polja[i][j] = (rand < 0.8) ? new Trava(this) : new Zid(this);
 				polja[i][j].setPozicija(i, j);
-				
 				polja[i][j].addMouseListener(new MouseAdapter() {
 					public void mouseClicked(MouseEvent e) {
 						System.out.println("Mouse clicked " + e.getX() + ", " + e.getY());
 					}
 				});
-				
 				add(polja[i][j]);
 			}
-		
+		dodajFigure();
+		nit.start();
+	}
+	
+	private void dodajFigure() {
 		Random r = new Random();
 		int r1 = r.nextInt(d);
 		int r2 = r.nextInt(d);
@@ -59,7 +61,6 @@ public class Mreza extends Panel implements Runnable {
 			r2 = r.nextInt(d);
 		}
 		novcici.add(new Novcic(polja[r1][r2]));
-		//nit.start();
 	}
 	
 	public Mreza(Igra igra) { this(17, igra); } 
@@ -82,7 +83,6 @@ public class Mreza extends Panel implements Runnable {
 				igrac.crtaj();
 				novcici.get(0).crtaj();
 			}
-		
 	}
 	
 	public void azuriraj() {
@@ -93,12 +93,15 @@ public class Mreza extends Panel implements Runnable {
 	public void run() {
 		try {
 			while(!Thread.interrupted()) {
+			synchronized(this) {
+				repaint();
+				//System.out.println("Nacrtano");
+			}
 			Thread.sleep(40);
-			repaint();
 			}
 		}catch (InterruptedException e) {}		
 	}
 	
-	//public void zavrsi() { nit.interrupt(); }
+	public void zavrsi() { nit.interrupt(); }
 
 }
