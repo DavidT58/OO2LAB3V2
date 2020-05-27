@@ -1,6 +1,7 @@
 package igra;
 
 import java.awt.Graphics;
+import java.util.Random;
 
 public class Tenk extends Figura implements Runnable {
 
@@ -17,7 +18,7 @@ public class Tenk extends Figura implements Runnable {
 	public void zaustavi() { nit.interrupt(); }
 
 	@Override
-	public void crtaj() {
+	public synchronized void crtaj() {
 		Graphics g = polje.getGraphics();
 		g.setColor(boja);
 		g.drawLine(0, 0, polje.getWidth(), polje.getHeight());
@@ -28,13 +29,34 @@ public class Tenk extends Figura implements Runnable {
 	public void run() {
 		try {
 			while(!Thread.interrupted()) {
-				synchronized(this) {
-					polje.getMreza().repaint();
+				Random r = new Random();
+				int t  = r.nextInt(4);
+				/*
+				 * 0 - gore
+				 * 1 - dole
+				 * 2 - desno
+				 * 3 - levo
+				 */
+				switch(t) {
+				case 0:
+					pomeriNaPolje(polje.dohvatiPoljePomeraj(0, -1));
+					System.out.println("Pomeren tenk na gore");
+					break;
+				case 1:
+					pomeriNaPolje(polje.dohvatiPoljePomeraj(0, 1));
+					System.out.println("Pomeren tenk na dole");
+					break;
+				case 2:
 					pomeriNaPolje(polje.dohvatiPoljePomeraj(1, 0));
-					polje.getMreza().repaint();
-					System.out.println("Pomeren tenk");
+					System.out.println("Pomeren tenk u desno");
+					break;
+				case 3:
+					pomeriNaPolje(polje.dohvatiPoljePomeraj(-1, 0));
+					System.out.println("Pomeren tenk u levo");
+					break;
 				}
-			Thread.sleep(500);
+				
+				Thread.sleep(500);
 			}
 		}catch (InterruptedException e) {}		
 	}

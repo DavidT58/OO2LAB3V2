@@ -19,6 +19,7 @@ public abstract class Figura {
 	
 	public void pomeriNaPolje(Polje p) {
 		if(p != null && p.mozeFigura(this)) {
+			polje.repaint();
 			polje = p;
 			x = polje.getPozicija()[0];
 			y = polje.getPozicija()[1];

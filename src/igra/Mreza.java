@@ -32,7 +32,7 @@ public class Mreza extends Panel implements Runnable {
 			for(int j = 0; j < d; j++) {
 				double rand = Math.random();
 				polja[i][j] = (rand < 0.8) ? new Trava(this) : new Zid(this);
-				polja[i][j].setPozicija(i, j);
+				polja[i][j].setPozicija(j, i);
 				polja[i][j].addMouseListener(new MouseAdapter() {
 					public void mouseClicked(MouseEvent e) {
 						System.out.println("Mouse clicked " + e.getX() + ", " + e.getY());
@@ -76,7 +76,7 @@ public class Mreza extends Panel implements Runnable {
 	
 	public Polje[][] getPolja() { return polja; }
 
-	public Igrac getIgraci() { return igrac; }
+	public Igrac getIgrac() { return igrac; }
 
 	public ArrayList<Novcic> getNovcici() { return novcici; }
 
@@ -95,7 +95,7 @@ public class Mreza extends Panel implements Runnable {
 			}
 	}
 	
-	public void azuriraj() {
+	public synchronized void azuriraj() {
 		
 	}
 	
@@ -105,15 +105,14 @@ public class Mreza extends Panel implements Runnable {
 			while(!Thread.interrupted()) {
 			synchronized(this) {
 				
-				repaint();
-				//System.out.println("Nacrtano");
 			}
+			repaint();
 			Thread.sleep(40);
 			}
 		}catch (InterruptedException e) {}		
 	}
 	
-	public void zavrsi() {
+	public synchronized void zavrsi() {
 		nit.interrupt();
 		tenkovi.get(0).zaustavi();
 	}
