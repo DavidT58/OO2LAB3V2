@@ -37,6 +37,7 @@ public class Igra extends Frame {
 		setSize(650, 650);
 		mreza = new Mreza(this);
 		add(mreza, BorderLayout.CENTER);
+		rezim = Rezim.IZMENA;
 		
 		dodajPanele();
 		dodajMeni();

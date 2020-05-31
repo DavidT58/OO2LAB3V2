@@ -28,23 +28,12 @@ public class Mreza extends Panel implements Runnable {
 		tenkovi = new ArrayList<Tenk>();
 		setLayout(new GridLayout(d, d, 2, 2));
 		
-		for(int i = 0; i < d; i++)
-			for(int j = 0; j < d; j++) {
-				double rand = Math.random();
-				polja[i][j] = (rand < 0.8) ? new Trava(this) : new Zid(this);
-				polja[i][j].setPozicija(j, i);
-				polja[i][j].addMouseListener(new MouseAdapter() {
-					public void mouseClicked(MouseEvent e) {
-						System.out.println("Mouse clicked " + e.getX() + ", " + e.getY());
-					}
-				});
-				add(polja[i][j]);
-			}
+		azuriraj();
 		dodajFigure();
-		nit.start();
+		
 	}
 	
-	private void dodajFigure() {
+	private synchronized void dodajFigure() {
 		Random r = new Random();
 		int r1 = r.nextInt(d);
 		int r2 = r.nextInt(d);
@@ -87,10 +76,11 @@ public class Mreza extends Panel implements Runnable {
 		setBackground(new Color(127,127,127));
 		for(int i = 0; i < d; i++) {
 			for(int j = 0; j < d; j++) {
-				polja[i][j].paint(g);
+				if(polja[i][j] != null)
+					polja[i][j].paint(g);
 			}
 		}
-		igrac.crtaj();
+		if(igrac != null)igrac.crtaj();
 		for(Novcic n : novcici)
 			n.crtaj();
 		for(Tenk t : tenkovi)
@@ -98,7 +88,19 @@ public class Mreza extends Panel implements Runnable {
 	}
 	
 	public synchronized void azuriraj() {
-		
+		for(int i = 0; i < d; i++) {
+			for(int j = 0; j < d; j++) {
+				double rand = Math.random();
+				polja[i][j] = (rand < 0.8) ? new Trava(this) : new Zid(this);
+				polja[i][j].setPozicija(j, i);
+				polja[i][j].addMouseListener(new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						System.out.println("Mouse clicked " + e.getX() + ", " + e.getY());
+					}
+				});
+				add(polja[i][j]);
+			}
+		}
 	}
 	
 	@Override
@@ -114,7 +116,9 @@ public class Mreza extends Panel implements Runnable {
 	
 	public synchronized void zavrsi() {
 		nit.interrupt();
-		tenkovi.get(0).zaustavi();
+		
+		for(Tenk t : tenkovi)
+			t.zaustavi();
 	}
 
 }
