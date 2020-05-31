@@ -50,6 +50,26 @@ public class Igra extends Frame {
 		add(mreza, BorderLayout.CENTER);
 		rezim = Rezim.IZMENA;
 		
+		addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				switch(e.getKeyCode()) {
+				case KeyEvent.VK_W:
+					mreza.getIgrac().pomeriIgraca(Smer.GORE);
+					System.out.println("POMEREN GORE");
+					break;
+				case KeyEvent.VK_A:
+					mreza.getIgrac().pomeriIgraca(Smer.LEVO);
+					break;
+				case KeyEvent.VK_S:
+					mreza.getIgrac().pomeriIgraca(Smer.DOLE);
+					break;
+				case KeyEvent.VK_D:
+					mreza.getIgrac().pomeriIgraca(Smer.DESNO);
+					break;
+				}
+			}
+		});
+		
 		setVisible(true);
 	}
 	
@@ -127,6 +147,7 @@ public class Igra extends Frame {
 			mreza.pokreni();
 			System.out.println("Igra zapoceta");
 		});
+		
 		
 		
 	}

@@ -49,19 +49,19 @@ public class Tenk extends Figura implements Runnable {
 				switch(t) {
 				case 0:
 					pomeriNaPolje(polje.dohvatiPoljePomeraj(0, -1));
-					System.out.println("Pomeren tenk na gore");
+					//System.out.println("Pomeren tenk na gore");
 					break;
 				case 1:
 					pomeriNaPolje(polje.dohvatiPoljePomeraj(0, 1));
-					System.out.println("Pomeren tenk na dole");
+					//System.out.println("Pomeren tenk na dole");
 					break;
 				case 2:
 					pomeriNaPolje(polje.dohvatiPoljePomeraj(1, 0));
-					System.out.println("Pomeren tenk u desno");
+					//System.out.println("Pomeren tenk u desno");
 					break;
 				case 3:
 					pomeriNaPolje(polje.dohvatiPoljePomeraj(-1, 0));
-					System.out.println("Pomeren tenk u levo");
+					//System.out.println("Pomeren tenk u levo");
 					break;
 				}
 				

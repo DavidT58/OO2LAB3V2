@@ -40,24 +40,7 @@ public class Mreza extends Panel implements Runnable {
 		brNov = igra.getNovcici();
 		inicijalizuj();
 		
-		addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent e) {
-				switch(e.getKeyCode()) {
-				case KeyEvent.VK_W:
-					igrac.pomeriIgraca(Smer.GORE);
-					break;
-				case KeyEvent.VK_A:
-					igrac.pomeriIgraca(Smer.LEVO);
-					break;
-				case KeyEvent.VK_S:
-					igrac.pomeriIgraca(Smer.DOLE);
-					break;
-				case KeyEvent.VK_D:
-					igrac.pomeriIgraca(Smer.DESNO);
-					break;
-				}
-			}
-		});
+		
 		//azuriraj();
 		//dodajFigure(igra.);
 		
