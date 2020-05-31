@@ -4,10 +4,15 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Panel;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Random;
+
+import igra.Mreza.Smer;
 
 @SuppressWarnings("serial")
 public class Mreza extends Panel implements Runnable {
@@ -18,7 +23,10 @@ public class Mreza extends Panel implements Runnable {
 	private ArrayList<Novcic> novcici;
 	private ArrayList<Tenk> tenkovi;
 	private int d;
-	Thread nit = new Thread(this);
+	private Thread nit = new Thread(this);
+	private boolean uToku;
+	private int brNov;
+	public enum Smer { GORE, DOLE, LEVO, DESNO };
 	
 	public Mreza(int dd, Igra ig) {
 		igra = ig;
@@ -27,13 +35,41 @@ public class Mreza extends Panel implements Runnable {
 		novcici = new ArrayList<Novcic>();
 		tenkovi = new ArrayList<Tenk>();
 		setLayout(new GridLayout(d, d, 2, 2));
+		uToku = false;
 		
-		azuriraj();
-		dodajFigure();
+		brNov = igra.getNovcici();
+		inicijalizuj();
+		
+		addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				switch(e.getKeyCode()) {
+				case KeyEvent.VK_W:
+					igrac.pomeriIgraca(Smer.GORE);
+					break;
+				case KeyEvent.VK_A:
+					igrac.pomeriIgraca(Smer.LEVO);
+					break;
+				case KeyEvent.VK_S:
+					igrac.pomeriIgraca(Smer.DOLE);
+					break;
+				case KeyEvent.VK_D:
+					igrac.pomeriIgraca(Smer.DESNO);
+					break;
+				}
+			}
+		});
+		//azuriraj();
+		//dodajFigure(igra.);
 		
 	}
 	
-	private synchronized void dodajFigure() {
+	public void setBrojNovcica(int t) { brNov = t; }
+	
+	public void setuToku() { uToku = !uToku; }
+	
+	public boolean getuToku() { return uToku; }
+	
+	private synchronized void dodajFigure(int brnov) {
 		Random r = new Random();
 		int r1 = r.nextInt(d);
 		int r2 = r.nextInt(d);
@@ -43,22 +79,26 @@ public class Mreza extends Panel implements Runnable {
 		}
 		igrac = new Igrac(polja[r1][r2]);
 		
-		r1 = r.nextInt(d);
-		r2 = r.nextInt(d);
-		while(!polja[r1][r2].moze()) {
-			r1 = r.nextInt(d);
-			r2 = r.nextInt(d);
-		}
-		novcici.add(new Novcic(polja[r1][r2]));
 		
-		r1 = r.nextInt(d);
-		r2 = r.nextInt(d);
-		while(!polja[r1][r2].moze()) {
+		for(int i = 0; i < brnov; i++) {
 			r1 = r.nextInt(d);
 			r2 = r.nextInt(d);
+			while(!polja[r1][r2].moze()) {
+				r1 = r.nextInt(d);
+				r2 = r.nextInt(d);
+			}
+			novcici.add(new Novcic(polja[r1][r2]));
 		}
-		tenkovi.add(new Tenk(polja[r1][r2]));
-		tenkovi.get(0).pokreni();
+		
+		for(int i = 0; i < brnov/3; i++) {
+			r1 = r.nextInt(d);
+			r2 = r.nextInt(d);
+			while(!polja[r1][r2].moze()) {
+				r1 = r.nextInt(d);
+				r2 = r.nextInt(d);
+			}
+			tenkovi.add(new Tenk(polja[r1][r2]));
+		}
 	}
 	
 	public Mreza(Igra igra) { this(17, igra); } 
@@ -87,7 +127,9 @@ public class Mreza extends Panel implements Runnable {
 			t.crtaj();
 	}
 	
-	public synchronized void azuriraj() {
+	
+	
+	public synchronized void inicijalizuj() {
 		for(int i = 0; i < d; i++) {
 			for(int j = 0; j < d; j++) {
 				double rand = Math.random();
@@ -101,24 +143,42 @@ public class Mreza extends Panel implements Runnable {
 				add(polja[i][j]);
 			}
 		}
+		dodajFigure(brNov);
+	}
+	
+	public synchronized void azuriraj() {
+		
 	}
 	
 	@Override
 	public void run() {
 		try {
 			while(!Thread.interrupted()) {
-				
-			repaint();
-			Thread.sleep(40);
+				repaint();
+				Thread.sleep(40);
 			}
 		}catch (InterruptedException e) {}		
 	}
 	
+	public synchronized void pokreni() {
+		if(nit == null)
+			nit = new Thread(this);
+		
+		if(!nit.isAlive())
+			nit.start();
+		
+		for(Tenk t : tenkovi)
+			t.pokreni();
+		uToku = true;
+	}
+	
 	public synchronized void zavrsi() {
+		uToku = false;
 		nit.interrupt();
 		
 		for(Tenk t : tenkovi)
 			t.zaustavi();
+		nit = null;
 	}
 
 }

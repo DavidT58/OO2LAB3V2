@@ -6,16 +6,25 @@ import java.util.Random;
 public class Tenk extends Figura implements Runnable {
 
 	//public enum Smer{ GORE, DOLE, LEVO, DESNO };
-	Thread nit = new Thread(this);
+	Thread nit;
 	
 	public Tenk(Polje p) {
 		super(p);
 		
 	}
 	
-	public void pokreni() { nit.start(); }
+	public void pokreni() {
+		if(nit == null)
+			nit = new Thread(this);
+		if(!nit.isAlive())
+			nit.start();
+	}
 	
-	public void zaustavi() { nit.interrupt(); }
+	public void zaustavi() {
+		if(nit != null)
+			nit.interrupt(); 
+		nit = null;
+	}
 
 	@Override
 	public synchronized void crtaj() {

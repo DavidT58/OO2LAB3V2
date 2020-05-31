@@ -13,35 +13,42 @@ import java.awt.MenuBar;
 import java.awt.MenuItem;
 import java.awt.Panel;
 import java.awt.TextField;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
+import igra.Mreza.Smer;
 
 @SuppressWarnings("serial")
 public class Igra extends Frame {
 	private Mreza mreza;
 	public enum Rezim { IGRA, IZMENA };
 	public Rezim rezim;
-	MenuBar bar;
-	Menu menu;
-	MenuItem rezimIgre;
-	MenuItem rezimIzmena;
-	CheckboxGroup izbor;
-	Checkbox trava;
-	Checkbox zid;
-	TextField brojNovcica;
-	Label brojPoena;
-	Button pocni;
+	private MenuBar bar;
+	private Menu menu;
+	private MenuItem rezimIgre;
+	private MenuItem rezimIzmena;
+	private CheckboxGroup izbor;
+	private Checkbox trava;
+	private Checkbox zid;
+	private TextField brojNovcica;
+	private Label brojPoena;
+	private Button pocni;
 	
 	public Igra() {
 		super("Tenkovi");
 		setSize(650, 650);
-		mreza = new Mreza(this);
-		add(mreza, BorderLayout.CENTER);
-		rezim = Rezim.IZMENA;
+		
+		
 		
 		dodajPanele();
 		dodajMeni();
 		dodajOsluskivace();
+		
+		mreza = new Mreza(this);
+		add(mreza, BorderLayout.CENTER);
+		rezim = Rezim.IZMENA;
 		
 		setVisible(true);
 	}
@@ -69,7 +76,7 @@ public class Igra extends Frame {
 		
 		
 		Label novcici = new Label("Novcica: ");
-		brojNovcica = new TextField(2);
+		brojNovcica = new TextField("12", 3);
 		Label poeni = new Label("Poena: ");
 		brojPoena = new Label("");
 		pocni = new Button("Pocni");
@@ -94,14 +101,34 @@ public class Igra extends Frame {
 		});
 		
 		rezimIzmena.addActionListener(e -> {
+			//mreza.repaint();
+			mreza.zavrsi();
+			trava.setEnabled(true);
+			zid.setEnabled(true);
+			pocni.setEnabled(false);
 			rezim = Rezim.IZMENA;
 			System.out.println("Rezim Izmena");
+			
 		});
 		
 		rezimIgre.addActionListener(e -> {
 			rezim = Rezim.IGRA;
+			trava.setEnabled(false);
+			zid.setEnabled(false);
+			pocni.setEnabled(true);
 			System.out.println("Rezim Igre");
 		});
+		
+		pocni.addActionListener(e -> {
+			if(brojNovcica.getText() != "") {
+				int t = Integer.parseInt(brojNovcica.getText());
+				mreza.setBrojNovcica(t);
+			}
+			mreza.pokreni();
+			System.out.println("Igra zapoceta");
+		});
+		
+		
 	}
 	
 	private void dodajMeni() {
@@ -114,5 +141,12 @@ public class Igra extends Frame {
 		menu.add(rezimIzmena);
 		//menu.addSeparator();
 		menu.add(rezimIgre);
+	}
+
+	public int getNovcici() {
+		if(brojNovcica.getText() != "") {
+			return Integer.parseInt(brojNovcica.getText());
+		}
+		return 0;
 	}
 }
