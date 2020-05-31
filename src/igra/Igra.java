@@ -19,8 +19,12 @@ import java.awt.event.WindowEvent;
 @SuppressWarnings("serial")
 public class Igra extends Frame {
 	private Mreza mreza;
-	private boolean rezim; //true rezim igre, false rezim izmena
-	private boolean izmena;
+	public enum Rezim { IGRA, IZMENA };
+	public Rezim rezim;
+	MenuBar bar;
+	Menu menu;
+	MenuItem rezimIgre;
+	MenuItem rezimIzmena;
 	CheckboxGroup izbor;
 	Checkbox trava;
 	Checkbox zid;
@@ -36,13 +40,8 @@ public class Igra extends Frame {
 		
 		dodajPanele();
 		dodajMeni();
+		dodajOsluskivace();
 		
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				mreza.zavrsi();
-				dispose();
-			}
-		});
 		setVisible(true);
 	}
 	
@@ -85,25 +84,34 @@ public class Igra extends Frame {
 		
 	}
 	
-	private void dodajMeni() {
-		MenuBar bar = new MenuBar();
-		Menu menu = new Menu("Rezim");
-		setMenuBar(bar);
-		bar.add(menu);
-		MenuItem rezimIgre = new MenuItem("Rezim igre");
-		MenuItem rezimIzmena = new MenuItem("Rezim izmena");
-		menu.add(rezimIzmena);
-		menu.addSeparator();
-		menu.add(rezimIgre);
+	private void dodajOsluskivace() {
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				mreza.zavrsi();
+				dispose();
+			}
+		});
 		
 		rezimIzmena.addActionListener(e -> {
-			rezim = false;
+			rezim = Rezim.IZMENA;
 			System.out.println("Rezim Izmena");
 		});
 		
 		rezimIgre.addActionListener(e -> {
-			rezim = true;
+			rezim = Rezim.IGRA;
 			System.out.println("Rezim Igre");
 		});
+	}
+	
+	private void dodajMeni() {
+		bar = new MenuBar();
+		menu = new Menu("Rezim");
+		setMenuBar(bar);
+		bar.add(menu);
+		rezimIgre = new MenuItem("Rezim igre");
+		rezimIzmena = new MenuItem("Rezim izmena");
+		menu.add(rezimIzmena);
+		//menu.addSeparator();
+		menu.add(rezimIgre);
 	}
 }

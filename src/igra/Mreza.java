@@ -81,18 +81,20 @@ public class Mreza extends Panel implements Runnable {
 	public ArrayList<Novcic> getNovcici() { return novcici; }
 
 	public ArrayList<Tenk> getTenkovi() { return tenkovi; }
-
 	
 	@Override
 	public void paint(Graphics g) {
 		setBackground(new Color(127,127,127));
-		for(int i = 0; i < d; i++)
+		for(int i = 0; i < d; i++) {
 			for(int j = 0; j < d; j++) {
 				polja[i][j].paint(g);
-				igrac.crtaj();
-				novcici.get(0).crtaj();
-				tenkovi.get(0).crtaj();
 			}
+		}
+		igrac.crtaj();
+		for(Novcic n : novcici)
+			n.crtaj();
+		for(Tenk t : tenkovi)
+			t.crtaj();
 	}
 	
 	public synchronized void azuriraj() {
@@ -103,9 +105,7 @@ public class Mreza extends Panel implements Runnable {
 	public void run() {
 		try {
 			while(!Thread.interrupted()) {
-			synchronized(this) {
 				
-			}
 			repaint();
 			Thread.sleep(40);
 			}
