@@ -49,9 +49,9 @@ public abstract class Polje extends Canvas {
 	
 	public Mreza getMreza() { return mreza; }
 	
-	public boolean mozeFigura(Figura f) { return moze; }
-	
-	public boolean moze() { 
-		return !(this instanceof Zid);
+	public boolean mozeFigura(Figura f) {
+		
+		return moze;  
 	}
+	
 }

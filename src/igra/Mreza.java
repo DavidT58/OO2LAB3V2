@@ -3,6 +3,7 @@ package igra;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Label;
 import java.awt.Panel;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -24,20 +25,21 @@ public class Mreza extends Panel implements Runnable {
 	private ArrayList<Tenk> tenkovi;
 	private int d;
 	private Thread nit = new Thread(this);
-	//private boolean uToku;
 	private int brNov;
 	public enum Smer { GORE, DOLE, LEVO, DESNO };
+	private Label labelPoeni;
+	private int poeni;
 	
 	public Mreza(int dd, Igra ig) {
 		igra = ig;
 		d = dd;
+		poeni = 0;
+		labelPoeni = new Label();
 		polja = new Polje[d][d];
 		novcici = new ArrayList<Novcic>();
 		tenkovi = new ArrayList<Tenk>();
 		setLayout(new GridLayout(d, d, 2, 2));
 		setBackground(new Color(127,127,127));
-		
-		//uToku = false;
 		
 		brNov = 12;
 		for(int i = 0; i < d; i++) {
@@ -55,20 +57,15 @@ public class Mreza extends Panel implements Runnable {
 		}
 		dodajFigure(brNov);
 		
-		//nit.start();
 	}
 	
 	public void setBrojNovcica(int t) { brNov = t; }
-	
-	//public void setuToku() { uToku = !uToku; }
-	
-	//public boolean getuToku() { return uToku; }
 	
 	private void dodajFigure(int brnov) {
 		Random r = new Random();
 		int r1 = r.nextInt(d);
 		int r2 = r.nextInt(d);
-		while(!polja[r1][r2].moze()) {
+		while(!polja[r1][r2].mozeFigura(igrac)) {
 			r1 = r.nextInt(d);
 			r2 = r.nextInt(d);
 		}
@@ -78,7 +75,7 @@ public class Mreza extends Panel implements Runnable {
 		for(int i = 0; i < brnov; i++) {
 			r1 = r.nextInt(d);
 			r2 = r.nextInt(d);
-			while(!polja[r1][r2].moze()) {
+			while(!polja[r1][r2].mozeFigura(igrac)){
 				r1 = r.nextInt(d);
 				r2 = r.nextInt(d);
 			}
@@ -88,7 +85,7 @@ public class Mreza extends Panel implements Runnable {
 		for(int i = 0; i < brnov/3; i++) {
 			r1 = r.nextInt(d);
 			r2 = r.nextInt(d);
-			while(!polja[r1][r2].moze()) {
+			while(!polja[r1][r2].mozeFigura(igrac)) {
 				r1 = r.nextInt(d);
 				r2 = r.nextInt(d);
 			}
@@ -125,31 +122,38 @@ public class Mreza extends Panel implements Runnable {
 	public synchronized void pomeriIgraca(Smer s) {
 		switch(s) {
 		case GORE:
-			//if(polje.dohvatiPoljePomeraj(0, -1).mozeFigura(this))
-			//System.out.println("Pomeren igrac GORE");
-				igrac.pomeriNaPolje(igrac.getPolje().dohvatiPoljePomeraj(0, -1));
+			igrac.pomeriNaPolje(igrac.getPolje().dohvatiPoljePomeraj(0, -1));
 			break;
 		case DOLE:
-			//if(polje.dohvatiPoljePomeraj(0, 1).mozeFigura(this))
-				igrac.pomeriNaPolje(igrac.getPolje().dohvatiPoljePomeraj(0, 1));
+			igrac.pomeriNaPolje(igrac.getPolje().dohvatiPoljePomeraj(0, 1));
 			break;
 		case LEVO:
-			//if(polje.dohvatiPoljePomeraj(-1, 0).mozeFigura(this))
-				igrac.pomeriNaPolje(igrac.getPolje().dohvatiPoljePomeraj(-1, 0));
+			igrac.pomeriNaPolje(igrac.getPolje().dohvatiPoljePomeraj(-1, 0));
 			break;
 		case DESNO:
-			//if(polje.dohvatiPoljePomeraj(1, 0).mozeFigura(this))
-				igrac.pomeriNaPolje(igrac.getPolje().dohvatiPoljePomeraj(1, 0));
+			igrac.pomeriNaPolje(igrac.getPolje().dohvatiPoljePomeraj(1, 0));
 			break;
 		}
 	}
 	
-	public void inicijalizuj() {
+	private synchronized void proveri() {
+		for(Tenk t: tenkovi) {
+			if(t.equals(igrac)) {
+				zavrsi();
+			}
+		}
 		
-	}
-	
-	public void azuriraj() {
-		
+		ArrayList<Novcic> zaBrisanje = new ArrayList<Novcic>();
+		for(Novcic n : novcici) {
+			if(n.equals(igrac)) {
+				zaBrisanje.add(n);
+				poeni++;
+				labelPoeni.setText("" + poeni);
+			}
+		}
+		novcici.removeAll(zaBrisanje);
+		if(novcici.size() == 0)
+			zavrsi();
 	}
 	
 	@Override
@@ -158,6 +162,7 @@ public class Mreza extends Panel implements Runnable {
 			while(!Thread.interrupted()) {
 				repaint();
 				requestFocus();
+				proveri();
 				Thread.sleep(40);
 			}
 		}catch (InterruptedException e) {}		
@@ -172,17 +177,17 @@ public class Mreza extends Panel implements Runnable {
 		
 		for(Tenk t : tenkovi)
 			t.pokreni();
-		//uToku = true;
 	}
 	
-	public void zavrsi() {
-		//uToku = false;
-		
+	public void zavrsi() {		
 		for(Tenk t : tenkovi)
 			t.zaustavi();
 		
-		nit.interrupt();
+		if(nit != null && nit.isAlive())
+			nit.interrupt();
 		nit = null;
 	}
+
+	public Label getLabel() { return labelPoeni; }
 
 }

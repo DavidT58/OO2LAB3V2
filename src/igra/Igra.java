@@ -39,6 +39,7 @@ public class Igra extends Frame {
 	public Igra() {
 		super("Tenkovi");
 		setSize(650, 650);
+		setResizable(false);
 		
 		mreza = new Mreza(this);
 		add(mreza, BorderLayout.CENTER);
@@ -47,13 +48,10 @@ public class Igra extends Frame {
 		dodajMeni();
 		dodajOsluskivace();
 		
-		
-		
-		//rezim = Rezim.IZMENA;
+		postaviRezimIgre();
 		
 		
 		setVisible(true);
-		
 	}
 	
 	private void dodajPanele() {
@@ -80,8 +78,8 @@ public class Igra extends Frame {
 		
 		Label novcici = new Label("Novcica: ");
 		brojNovcica = new TextField("12", 3);
-		Label poeni = new Label("Poena: ");
-		brojPoena = new Label("");
+		Label poeni = new Label("Poena:");
+		brojPoena = mreza.getLabel();
 		pocni = new Button("Pocni");
 		
 		donji.add(novcici);
@@ -90,14 +88,8 @@ public class Igra extends Frame {
 		donji.add(brojPoena);
 		donji.add(pocni);
 		
-		//desni.setFocusable(false);
-		//donji.setFocusable(false);
-		
 		add(desni, BorderLayout.EAST);
 		add(donji, BorderLayout.SOUTH);
-		//mreza.setFocusable(true);
-		//mreza.requestFocus();
-		
 	}
 	
 	private void dodajOsluskivace() {
@@ -134,22 +126,11 @@ public class Igra extends Frame {
 		});
 		
 		rezimIzmena.addActionListener(e -> {
-			//mreza.repaint();
-			mreza.zavrsi();
-			trava.setEnabled(true);
-			zid.setEnabled(true);
-			pocni.setEnabled(false);
-			rezim = Rezim.IZMENA;
-			System.out.println("Rezim Izmena");
-			
+			postaviRezimIzmene();
 		});
 		
 		rezimIgre.addActionListener(e -> {
-			rezim = Rezim.IGRA;
-			trava.setEnabled(false);
-			zid.setEnabled(false);
-			pocni.setEnabled(true);
-			System.out.println("Rezim Igre");
+			postaviRezimIgre();
 		});
 		
 		pocni.addActionListener(e -> {
@@ -174,6 +155,23 @@ public class Igra extends Frame {
 		menu.add(rezimIgre);
 	}
 
+	private void postaviRezimIzmene() {
+		mreza.zavrsi();
+		trava.setEnabled(true);
+		zid.setEnabled(true);
+		pocni.setEnabled(false);
+		rezim = Rezim.IZMENA;
+		System.out.println("Rezim Izmena");
+	}
+	
+	private void postaviRezimIgre() {
+		rezim = Rezim.IGRA;
+		trava.setEnabled(false);
+		zid.setEnabled(false);
+		pocni.setEnabled(true);
+		System.out.println("Rezim Igre");
+	}
+	
 	/*
 	public int getNovcici() {
 		if(brojNovcica.getText() != "") {
