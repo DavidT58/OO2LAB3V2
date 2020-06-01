@@ -24,6 +24,7 @@ public class Mreza extends Panel implements Runnable {
 	public enum Smer { GORE, DOLE, LEVO, DESNO };
 	private Label labelPoeni;
 	private int poeni;
+	private MouseAdapter[][] adapteri;
 	
 	public Mreza(int dd, Igra ig) {
 		igra = ig;
@@ -33,6 +34,7 @@ public class Mreza extends Panel implements Runnable {
 		polja = new Polje[d][d];
 		novcici = new ArrayList<Novcic>();
 		tenkovi = new ArrayList<Tenk>();
+		adapteri = new MouseAdapter[d][d];
 		setLayout(new GridLayout(d, d, 2, 2));
 		setBackground(new Color(127,127,127));
 		
@@ -41,44 +43,37 @@ public class Mreza extends Panel implements Runnable {
 		dodajOsluskivace();
 	}
 	
-	private Polje zameniPolje(Polje staro) {
-		if(igra.getTipPolja() == 0)
-			return new Trava(this);
-		if(igra.getTipPolja() == 1)
-			return new Zid(this);
-		return null;
-	}
-	
 	private void dodajOsluskivace() {
 		for(int i = 0; i < d; i++) {
 			for(int j = 0; j < d; j++) {
 				Polje t = polja[i][j];
-				polja[i][j].addMouseListener(new MouseAdapter() {
+				adapteri[i][j] = new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						System.out.println(t.getX() + " " + t.getY());
-						if(igra.getRezim() == Igra.Rezim.IZMENA) {
-							removeAll();
-							int newx = t.getPozicija()[0];
-							int newy = t.getPozicija()[1];
-							polja[newy][newx] = (igra.getTipPolja() == 0) ? new Trava(t.getMreza()) : new Zid(t.getMreza());
-							for(Polje[] i : polja)
-								for(Polje j : i) {
-									add(j);
-									//j.removeMouseListener(this);
-									//dodajOsluskivace();
-								}
-							repaint();
-							repaint();
-							repaint();
-						}
+						zamena(t);
 					}
-				});
+				};
+				polja[i][j].addMouseListener(adapteri[i][j]);
 			}
 		}
+		
 	}
 	
-	
+	public void zamena(Polje p) {
+		System.out.println(p.getX() + " " + p.getY());
+		if(igra.getRezim() == Igra.Rezim.IZMENA) {
+			removeAll();
+			int newx = p.getPozicija()[0];
+			int newy = p.getPozicija()[1];
+			polja[newy][newx] = (igra.getTipPolja() == 0) ? new Trava(this) : new Zid(this);
+			polja[newy][newx].addMouseListener(adapteri[newy][newx]);
+			for(Polje[] i : polja)
+				for(Polje j : i)
+					add(j);
+			revalidate();
+			this.repaint();
+		}
+	}
 	
 	public void init() {
 		for(int i = 0; i < d; i++) {
