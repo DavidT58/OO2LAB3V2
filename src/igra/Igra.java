@@ -40,37 +40,20 @@ public class Igra extends Frame {
 		super("Tenkovi");
 		setSize(650, 650);
 		
-		
+		mreza = new Mreza(this);
+		add(mreza, BorderLayout.CENTER);
 		
 		dodajPanele();
 		dodajMeni();
 		dodajOsluskivace();
 		
-		mreza = new Mreza(this);
-		add(mreza, BorderLayout.CENTER);
-		rezim = Rezim.IZMENA;
 		
-		addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent e) {
-				switch(e.getKeyCode()) {
-				case KeyEvent.VK_W:
-					mreza.getIgrac().pomeriIgraca(Smer.GORE);
-					System.out.println("POMEREN GORE");
-					break;
-				case KeyEvent.VK_A:
-					mreza.getIgrac().pomeriIgraca(Smer.LEVO);
-					break;
-				case KeyEvent.VK_S:
-					mreza.getIgrac().pomeriIgraca(Smer.DOLE);
-					break;
-				case KeyEvent.VK_D:
-					mreza.getIgrac().pomeriIgraca(Smer.DESNO);
-					break;
-				}
-			}
-		});
+		
+		//rezim = Rezim.IZMENA;
+		
 		
 		setVisible(true);
+		
 	}
 	
 	private void dodajPanele() {
@@ -107,8 +90,13 @@ public class Igra extends Frame {
 		donji.add(brojPoena);
 		donji.add(pocni);
 		
+		//desni.setFocusable(false);
+		//donji.setFocusable(false);
+		
 		add(desni, BorderLayout.EAST);
 		add(donji, BorderLayout.SOUTH);
+		//mreza.setFocusable(true);
+		//mreza.requestFocus();
 		
 	}
 	
@@ -117,6 +105,31 @@ public class Igra extends Frame {
 			public void windowClosing(WindowEvent e) {
 				mreza.zavrsi();
 				dispose();
+			}
+		});
+		
+		setFocusTraversalKeysEnabled(false);
+		mreza.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				switch(e.getKeyCode()) {
+				case KeyEvent.VK_W:
+					mreza.pomeriIgraca(Smer.GORE);
+					System.out.println("POMEREN GORE");
+					break;
+				case KeyEvent.VK_A:
+					mreza.pomeriIgraca(Smer.LEVO);
+					System.out.println("POMEREN LEVO");
+					break;
+				case KeyEvent.VK_S:
+					mreza.pomeriIgraca(Smer.DOLE);
+					System.out.println("POMEREN DOLE");
+					break;
+				case KeyEvent.VK_D:
+					mreza.pomeriIgraca(Smer.DESNO);
+					System.out.println("POMEREN DESNO");
+					break;
+				}
 			}
 		});
 		
@@ -147,9 +160,6 @@ public class Igra extends Frame {
 			mreza.pokreni();
 			System.out.println("Igra zapoceta");
 		});
-		
-		
-		
 	}
 	
 	private void dodajMeni() {
@@ -164,10 +174,11 @@ public class Igra extends Frame {
 		menu.add(rezimIgre);
 	}
 
+	/*
 	public int getNovcici() {
 		if(brojNovcica.getText() != "") {
 			return Integer.parseInt(brojNovcica.getText());
 		}
 		return 0;
-	}
+	}*/
 }

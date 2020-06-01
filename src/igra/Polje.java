@@ -54,10 +54,4 @@ public abstract class Polje extends Canvas {
 	public boolean moze() { 
 		return !(this instanceof Zid);
 	}
-	
-	/*
-	public void paint(Graphics g) {
-		g.clearRect(0, 0, getWidth(), getHeight());
-	}
-	*/
 }
