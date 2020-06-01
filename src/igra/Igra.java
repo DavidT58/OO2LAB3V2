@@ -172,11 +172,11 @@ public class Igra extends Frame {
 		System.out.println("Rezim Igre");
 	}
 	
-	/*
+	
 	public int getNovcici() {
 		if(brojNovcica.getText() != "") {
 			return Integer.parseInt(brojNovcica.getText());
 		}
 		return 0;
-	}*/
+	}
 }

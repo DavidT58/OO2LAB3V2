@@ -41,7 +41,11 @@ public class Mreza extends Panel implements Runnable {
 		setLayout(new GridLayout(d, d, 2, 2));
 		setBackground(new Color(127,127,127));
 		
-		brNov = 12;
+		brNov = 0;
+		init();
+	}
+	
+	public void init() {
 		for(int i = 0; i < d; i++) {
 			for(int j = 0; j < d; j++) {
 				double rand = Math.random();
@@ -55,11 +59,15 @@ public class Mreza extends Panel implements Runnable {
 				add(polja[i][j]);
 			}
 		}
-		dodajFigure(brNov);
-		
 	}
 	
-	public void setBrojNovcica(int t) { brNov = t; }
+	public synchronized void setBrojNovcica(int t) {
+		brNov = t; 
+		igrac = null;
+		novcici = new ArrayList<Novcic>();
+		tenkovi = new ArrayList<Tenk>();
+		dodajFigure(brNov);
+	}
 	
 	private void dodajFigure(int brnov) {
 		Random r = new Random();
@@ -137,6 +145,7 @@ public class Mreza extends Panel implements Runnable {
 	}
 	
 	private synchronized void proveri() {
+		
 		for(Tenk t: tenkovi) {
 			if(t.equals(igrac)) {
 				zavrsi();
