@@ -65,10 +65,12 @@ public class Mreza extends Panel implements Runnable {
 							for(Polje[] i : polja)
 								for(Polje j : i) {
 									add(j);
-									//j.removeMouseListener(l);
+									//j.removeMouseListener(this);
 									//dodajOsluskivace();
 								}
-									
+							repaint();
+							repaint();
+							repaint();
 						}
 					}
 				});
