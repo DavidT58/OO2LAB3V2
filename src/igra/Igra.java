@@ -5,6 +5,7 @@ import java.awt.Button;
 import java.awt.Checkbox;
 import java.awt.CheckboxGroup;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Label;
@@ -15,6 +16,8 @@ import java.awt.Panel;
 import java.awt.TextField;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -39,7 +42,7 @@ public class Igra extends Frame {
 	public Igra() {
 		super("Tenkovi");
 		setSize(650, 650);
-		setResizable(false);
+		//setResizable(false);
 		
 		mreza = new Mreza(this);
 		add(mreza, BorderLayout.CENTER);
@@ -58,6 +61,7 @@ public class Igra extends Frame {
 		Panel desni = new Panel();
 		Panel donji = new Panel();
 		desni.setLayout(new BorderLayout());
+		donji.setLayout(new FlowLayout(FlowLayout.CENTER, 40, 10));
 		Panel choice = new Panel();
 		choice.setLayout(new GridLayout(2,0));
 		desni.add(choice, BorderLayout.EAST);
@@ -77,16 +81,19 @@ public class Igra extends Frame {
 		
 		
 		Label novcici = new Label("Novcica: ");
-		brojNovcica = new TextField("12", 3);
+		
+		brojNovcica = new TextField("6", 3);
 		Label poeni = new Label("Poena:");
 		brojPoena = mreza.getLabel();
 		pocni = new Button("Pocni");
+		
 		
 		donji.add(novcici);
 		donji.add(brojNovcica);
 		donji.add(poeni);
 		donji.add(brojPoena);
 		donji.add(pocni);
+		
 		
 		add(desni, BorderLayout.EAST);
 		add(donji, BorderLayout.SOUTH);
@@ -107,19 +114,19 @@ public class Igra extends Frame {
 				switch(e.getKeyCode()) {
 				case KeyEvent.VK_W:
 					mreza.pomeriIgraca(Smer.GORE);
-					System.out.println("POMEREN GORE");
+					//System.out.println("POMEREN GORE");
 					break;
 				case KeyEvent.VK_A:
 					mreza.pomeriIgraca(Smer.LEVO);
-					System.out.println("POMEREN LEVO");
+					//System.out.println("POMEREN LEVO");
 					break;
 				case KeyEvent.VK_S:
 					mreza.pomeriIgraca(Smer.DOLE);
-					System.out.println("POMEREN DOLE");
+					//System.out.println("POMEREN DOLE");
 					break;
 				case KeyEvent.VK_D:
 					mreza.pomeriIgraca(Smer.DESNO);
-					System.out.println("POMEREN DESNO");
+					//System.out.println("POMEREN DESNO");
 					break;
 				}
 			}
@@ -141,6 +148,37 @@ public class Igra extends Frame {
 			mreza.pokreni();
 			System.out.println("Igra zapoceta");
 		});
+		
+		mreza.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				zamena();
+			}
+		});
+	}
+	
+	private void zamena() {
+		if(rezim == Rezim.IZMENA) {
+			mreza.removeAll();
+			for(int i = 0; i < mreza.getPolja().length; i++) {
+				for(int j = 0; j < mreza.getPolja().length; j++) {
+					mreza.getPolja()[i][j] = zameniPolje(mreza.getPolja()[i][j]);
+					mreza.getPolja()[i][j].setPozicija(j, i);
+					mreza.add(mreza.getPolja()[i][j]);
+				}
+			}
+			
+		}
+		//for(int i = 0; i < 10; i++)
+		mreza.repaint();
+		repaint();
+	}
+	
+	private Polje zameniPolje(Polje staro) {
+		if(trava.getState())
+			return new Trava(mreza);
+		if(zid.getState())
+			return new Zid(mreza);
+		return null;
 	}
 	
 	private void dodajMeni() {
@@ -172,11 +210,23 @@ public class Igra extends Frame {
 		System.out.println("Rezim Igre");
 	}
 	
-	
 	public int getNovcici() {
 		if(brojNovcica.getText() != "") {
 			return Integer.parseInt(brojNovcica.getText());
 		}
 		return 0;
+	}
+	
+	public Rezim getRezim() { return rezim; }
+	
+	public int getTipPolja() {
+		if(trava.getState()) {
+			return 0;
+		}
+		if(zid.getState()) {
+			return 1;
+		}
+		
+		return -1;
 	}
 }

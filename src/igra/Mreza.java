@@ -5,15 +5,8 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.Panel;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Random;
-
-import igra.Mreza.Smer;
 
 @SuppressWarnings("serial")
 public class Mreza extends Panel implements Runnable {
@@ -51,11 +44,6 @@ public class Mreza extends Panel implements Runnable {
 				double rand = Math.random();
 				polja[i][j] = (rand < 0.8) ? new Trava(this) : new Zid(this);
 				polja[i][j].setPozicija(j, i);
-				polja[i][j].addMouseListener(new MouseAdapter() {
-					public void mouseClicked(MouseEvent e) {
-						System.out.println("Mouse clicked " + e.getX() + ", " + e.getY());
-					}
-				});
 				add(polja[i][j]);
 			}
 		}
@@ -157,7 +145,7 @@ public class Mreza extends Panel implements Runnable {
 			if(n.equals(igrac)) {
 				zaBrisanje.add(n);
 				poeni++;
-				labelPoeni.setText("" + poeni);
+				labelPoeni.setText(Integer.toString(poeni));
 			}
 		}
 		novcici.removeAll(zaBrisanje);
@@ -178,6 +166,8 @@ public class Mreza extends Panel implements Runnable {
 	}
 	
 	public void pokreni() {
+		poeni = 0;
+		labelPoeni.setText(Integer.toString(poeni));
 		if(nit == null)
 			nit = new Thread(this);
 		
@@ -195,8 +185,9 @@ public class Mreza extends Panel implements Runnable {
 		if(nit != null && nit.isAlive())
 			nit.interrupt();
 		nit = null;
+		System.out.println("Mreza zaustavljena");
+		repaint();
 	}
 
 	public Label getLabel() { return labelPoeni; }
-
 }

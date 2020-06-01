@@ -8,9 +8,6 @@ import java.awt.Graphics;
 @SuppressWarnings("serial")
 public abstract class Polje extends Canvas {
 	
-	protected static int nextid = 0;
-	protected int id = nextid++;
-	
 	protected Color boja;
 	protected Mreza mreza;
 	protected boolean moze;
@@ -20,7 +17,6 @@ public abstract class Polje extends Canvas {
 		mreza = m;
 	}
 	
-	public int getID() { return id; }
 	
 	public Polje dohvatiPoljePomeraj(int offsx, int offsy) {
 		int newX = xx + offsx;
