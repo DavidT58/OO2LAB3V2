@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.Panel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -36,7 +38,45 @@ public class Mreza extends Panel implements Runnable {
 		
 		brNov = 0;
 		init();
+		dodajOsluskivace();
 	}
+	
+	private Polje zameniPolje(Polje staro) {
+		if(igra.getTipPolja() == 0)
+			return new Trava(this);
+		if(igra.getTipPolja() == 1)
+			return new Zid(this);
+		return null;
+	}
+	
+	private void dodajOsluskivace() {
+		for(int i = 0; i < d; i++) {
+			for(int j = 0; j < d; j++) {
+				Polje t = polja[i][j];
+				polja[i][j].addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						System.out.println(t.getX() + " " + t.getY());
+						if(igra.getRezim() == Igra.Rezim.IZMENA) {
+							removeAll();
+							int newx = t.getPozicija()[0];
+							int newy = t.getPozicija()[1];
+							polja[newy][newx] = (igra.getTipPolja() == 0) ? new Trava(t.getMreza()) : new Zid(t.getMreza());
+							for(Polje[] i : polja)
+								for(Polje j : i) {
+									add(j);
+									//j.removeMouseListener(l);
+									//dodajOsluskivace();
+								}
+									
+						}
+					}
+				});
+			}
+		}
+	}
+	
+	
 	
 	public void init() {
 		for(int i = 0; i < d; i++) {
@@ -182,10 +222,11 @@ public class Mreza extends Panel implements Runnable {
 		for(Tenk t : tenkovi)
 			t.zaustavi();
 		
-		if(nit != null && nit.isAlive())
+		if(nit != null && nit.isAlive()) {
 			nit.interrupt();
+			System.out.println("Mreza zaustavljena");
+		}			
 		nit = null;
-		System.out.println("Mreza zaustavljena");
 		repaint();
 	}
 

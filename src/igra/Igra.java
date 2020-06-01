@@ -5,6 +5,7 @@ import java.awt.Button;
 import java.awt.Checkbox;
 import java.awt.CheckboxGroup;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GridLayout;
@@ -148,37 +149,6 @@ public class Igra extends Frame {
 			mreza.pokreni();
 			System.out.println("Igra zapoceta");
 		});
-		
-		mreza.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				zamena();
-			}
-		});
-	}
-	
-	private void zamena() {
-		if(rezim == Rezim.IZMENA) {
-			mreza.removeAll();
-			for(int i = 0; i < mreza.getPolja().length; i++) {
-				for(int j = 0; j < mreza.getPolja().length; j++) {
-					mreza.getPolja()[i][j] = zameniPolje(mreza.getPolja()[i][j]);
-					mreza.getPolja()[i][j].setPozicija(j, i);
-					mreza.add(mreza.getPolja()[i][j]);
-				}
-			}
-			
-		}
-		//for(int i = 0; i < 10; i++)
-		mreza.repaint();
-		repaint();
-	}
-	
-	private Polje zameniPolje(Polje staro) {
-		if(trava.getState())
-			return new Trava(mreza);
-		if(zid.getState())
-			return new Zid(mreza);
-		return null;
 	}
 	
 	private void dodajMeni() {
